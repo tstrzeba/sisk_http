@@ -1,0 +1,4 @@
+-cpu=rx600
+-output="W:\RDK_Updates\RX63N\Originals\Workspace\Ethernet_uIP2\Ethernet_uIP_new\Ethernet_uIP\Debug\Ethernet_uIP.lib"
+-lang=c99
+-head=runtime,stdio,stdlib,string,new
