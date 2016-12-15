@@ -144,8 +144,8 @@ PT_THREAD(handle_script(struct httpd_state *s))
       s->scriptptr = s->file.data + 3;
       s->scriptlen = s->file.len - 3;
       if(*(s->scriptptr - 1) == ISO_colon) {
-	httpd_fs_open(s->scriptptr + 1, &s->file);
-	PT_WAIT_THREAD(&s->scriptpt, send_file(s));
+        httpd_fs_open(s->scriptptr + 1, &s->file);
+        PT_WAIT_THREAD(&s->scriptpt, send_file(s));
       } else {
 	PT_WAIT_THREAD(&s->scriptpt,
 		       httpd_cgi(s->scriptptr)(s, s->scriptptr));
@@ -261,41 +261,41 @@ PT_THREAD(handle_input(struct httpd_state *s))
   
   if(strncmp(s->inputbuf, http_get, 4) == 0) {
 
-  PSOCK_READTO(&s->sin, ISO_space);
+      PSOCK_READTO(&s->sin, ISO_space);
 
-  if(s->inputbuf[0] != ISO_slash) {
-    PSOCK_CLOSE_EXIT(&s->sin);
-  }
+      if(s->inputbuf[0] != ISO_slash) {
+        PSOCK_CLOSE_EXIT(&s->sin);
+      }
 
-  if(s->inputbuf[1] == ISO_space) {
-    strncpy(s->filename, http_index_html, sizeof(s->filename));
-  } else {
-    s->inputbuf[PSOCK_DATALEN(&s->sin) - 1] = 0;
-    strncpy(s->filename, &s->inputbuf[0], sizeof(s->filename));
-  }
+      if(s->inputbuf[1] == ISO_space) {
+        strncpy(s->filename, http_index_html, sizeof(s->filename));
+      } else {
+        s->inputbuf[PSOCK_DATALEN(&s->sin) - 1] = 0;
+        strncpy(s->filename, &s->inputbuf[0], sizeof(s->filename));
+      }
 
-  // Renesas ++
-  LEDptr = strstr(s->inputbuf, "LED");
+      // Renesas ++
+      LEDptr = strstr(s->inputbuf, "LED");
 
-  if (LEDptr !=NULL)
-  {
-      strncpy(LEDbuf, (const char *)(LEDptr), sizeof(LEDbuf));
-      LEDflag = 1;
-  }
-  // End of Renesas ++
+      if (LEDptr !=NULL)
+      {
+          strncpy(LEDbuf, (const char *)(LEDptr), sizeof(LEDbuf));
+          LEDflag = 1;
+      }
+      // End of Renesas ++
 
-  /*  httpd_log_file(uip_conn->ripaddr, s->filename);*/
+      /*  httpd_log_file(uip_conn->ripaddr, s->filename);*/
 
-  s->state = STATE_OUTPUT;
+      s->state = STATE_OUTPUT;
 
-  while(1) {
-	PSOCK_READTO(&s->sin, ISO_nl);
+      while(1) {
+        PSOCK_READTO(&s->sin, ISO_nl);
 
-    if(strncmp(s->inputbuf, http_referer, 8) == 0) {
-	  s->inputbuf[PSOCK_DATALEN(&s->sin) - 2] = 0;
-	  /*      httpd_log(&s->inputbuf[9]);*/
-	}
-    }
+        if(strncmp(s->inputbuf, http_referer, 8) == 0) {
+          s->inputbuf[PSOCK_DATALEN(&s->sin) - 2] = 0;
+          /*      httpd_log(&s->inputbuf[9]);*/
+        }
+        }
   }else {
   PSOCK_CLOSE_EXIT(&s->sin);
   }
