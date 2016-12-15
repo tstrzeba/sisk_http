@@ -37,6 +37,7 @@
 Includes   <System Includes> , "Project Includes"
 *******************************************************************************/
 #include <string.h>
+#include <stdlib.h> // strtoul()
 #include "platform.h"
 #include "user-app.h"
 #include "uip.h"
@@ -114,35 +115,88 @@ void user_app(void)
         led = 0;
         ptr1 = LEDbuf;                  // pointer to command string
 
-        for (i = 0; i < 3; i++)
-        {
-            // Search for key word "LED"
-            ptr2 = strstr(ptr1, "LED");   
-            if (ptr2 != NULL)
-            {
-                // Determine the LED settings, on or off
-                ledval = strncmp(ptr2+5, "On", 2) ? LED_OFF : LED_ON;
-                ptr1 = ptr2+5;
-            }
+        // Scan buffer for 'LED' string and take action for each found one
+        ptr2 = strstr(ptr1, "LED");
 
-            // NOTE: LED4 is used by timer tick to indicate activity
-            switch(i)
-            {
-                case 0:	
-                    LED5 = ledval;	
-                break;
-                
-                case 1:	
-                    LED6 = ledval;
-                break;
-                
-                case 2:	
-                    LED7 = ledval;
-                break;
-                
-                default:
-                break;
-            }
-        }
+        while (NULL != ptr2) {
+            // retrieve number from string like this: "LED3"
+            char* outc;
+            unsigned long int ledNumber;
+            errno = 0;
+            ledNumber = strtoul(ptr2+3, &outc, 10);
+            if (0 == errno) {
+                // LED number retrieved successfully
+                // so get requested state
+
+                // move ptr2 after "LEDx=" or after "LEDxx="
+                const uint8_t skipChars = (ledNumber < 10) ? 5 : 6;
+                ledval = strncmp(ptr2+skipChars, "On", 2) ? LED_OFF : LED_ON;
+
+                // Change LED value
+                switch (ledNumber) {
+                case 4 :
+                    LED4 = ledval; break;
+                case 5 :
+                    LED5 = ledval; break;
+                case 6 :
+                    LED6 = ledval; break;
+                case 7 :
+                    LED7 = ledval; break;
+                case 8 :
+                    LED8 = ledval; break;
+                case 9 :
+                    LED9 = ledval; break;
+                case 10 :
+                    LED10 = ledval; break;
+                case 11 :
+                    LED11 = ledval; break;
+                case 12 :
+                    LED12 = ledval; break;
+                case 13 :
+                    LED13 = ledval; break;
+                case 14 :
+                    LED14 = ledval; break;
+                case 15 :
+                    LED15 = ledval; break;
+                default: break;
+                }
+            } // valid LED number
+
+            // move pointer just after current "LED" string
+            ptr1 = ptr2 + 3;
+            ptr2 = strstr(ptr1, "LED");
+        } // end while()
+
+        // Original code
+//        for (i = 0; i < 3; i++)
+//        {
+//            // Search for key word "LED"
+//            ptr2 = strstr(ptr1, "LED");
+//            if (ptr2 != NULL)
+//            {
+//                // Determine the LED settings, on or off
+//                ledval = strncmp(ptr2+5, "On", 2) ? LED_OFF : LED_ON;
+//                ptr1 = ptr2+5;
+//            }
+//
+//            // NOTE: LED4 is used by timer tick to indicate activity
+//            switch(i)
+//            {
+//                case 0:
+//                    LED5 = ledval;
+//                break;
+//
+//                case 1:
+//                    LED6 = ledval;
+//                break;
+//
+//                case 2:
+//                    LED7 = ledval;
+//                break;
+//
+//                default:
+//                break;
+//            }
+//        }
     }
 }

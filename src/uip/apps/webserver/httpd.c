@@ -275,7 +275,7 @@ PT_THREAD(handle_input(struct httpd_state *s))
   }
 
   // Renesas ++
-  LEDptr = strstr(s->inputbuf, "LEDA");
+  LEDptr = strstr(s->inputbuf, "LED");
 
   if (LEDptr !=NULL)
   {

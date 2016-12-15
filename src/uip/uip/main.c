@@ -63,7 +63,7 @@ main(void)
 
     // Renesas -- network_device_init();
     /* Wait until Ether device initailize succesfully. 
-    Make sure Ethernet cable is plugged in. */ 
+    Make sure Ethernet cable is plugged in. */
     while (R_ETHER_ERROR == R_Ether_Open(ch, (uint8_t*) &mac_addr.addr[0]));
 
     // Renesas ++ set Ethernet address
@@ -171,7 +171,7 @@ void display_uip_demo(void)
 {
     lcd_clear();
     lcd_display(LCD_LINE1, "uIP Demo");
-    printf("uIP Demo\r\n") ;
+//    printf("uIP Demo\r\n") ;
     
 } /* End of function display_uip_demo(). */
 
@@ -195,7 +195,7 @@ void display_ip_address(const uint16_t * ipaddr)
     sprintf(dis_buf, "%d.%d.%d.%d", *p, *(p+1), *(p+2), *(p+3));
     lcd_display(LCD_LINE4, (const uint8_t *)dis_buf);
 
-    printf("IP Addr = %d.%d.%d.%d\r\n", *p, *(p+1), *(p+2), *(p+3)) ;
+//    printf("IP Addr = %d.%d.%d.%d\r\n", *p, *(p+1), *(p+2), *(p+3)) ;
     
 } /* End of function display_ip_address(). */
 
@@ -216,7 +216,7 @@ void display_mac_address(uint8_t * mac_addr)
     sprintf((char *)dis_buf, "%02X:%02X:%02X:%02X:%02X:%02X", *p, *(p+1), *(p+2), *(p+3), *(p+4), *(p+5));    
     lcd_display(LCD_LINE6, (const uint8_t *)dis_buf);
 
-    printf("MAC Addr = %02X:%02X:%02X:%02X:%02X:%02X", *p, *(p+1), *(p+2), *(p+3), *(p+4), *(p+5)) ;
+//    printf("MAC Addr = %02X:%02X:%02X:%02X:%02X:%02X", *p, *(p+1), *(p+2), *(p+3), *(p+4), *(p+5)) ;
     
 } /* End of function display_mac_address(). */
 

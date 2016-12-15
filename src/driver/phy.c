@@ -112,7 +112,7 @@ int16_t  phy_init( void )
       //printf("ID1=%x  ", reg) ;
       //reg = _phy_read(PHY_IDENTIFIER2_REG);
       //printf("ID2=%x\r\n", reg) ;
-      phy_dump_regs() ;
+//      phy_dump_regs() ;
       return R_PHY_OK;
   }
 }
@@ -122,30 +122,30 @@ void phy_dump_regs (void)
     volatile uint16_t reg;
     
     reg = _phy_read(0);
-    printf("0: %x  ", reg) ;
+//    printf("0: %x  ", reg) ;
     
     reg = _phy_read(1);
-    printf("1: %x  ", reg) ;
+//    printf("1: %x  ", reg) ;
     
     reg = _phy_read(2);
-    printf("2: %x  ", reg) ;
+//    printf("2: %x  ", reg) ;
 
     reg = _phy_read(3);
-    printf("3: %x  ", reg) ;
+//    printf("3: %x  ", reg) ;
 
     reg = _phy_read(4);
-    printf("4: %x  ", reg) ;
+//    printf("4: %x  ", reg) ;
 
     reg = _phy_read(5);
-    printf("5: %x  ", reg) ;
+//    printf("5: %x  ", reg) ;
 
     reg = _phy_read(6);
-    printf("6: %x  ", reg) ;
+//    printf("6: %x  ", reg) ;
     
     reg = _phy_read(17);
-    printf("17: %x  ", reg) ;
+//    printf("17: %x  ", reg) ;
     
-    printf("\r\n") ;
+//    printf("\r\n") ;
 }
 
 /******************************************************************************
@@ -214,7 +214,7 @@ int16_t phy_set_autonegotiate( void )
 	  
 #if 1
 	  /* National DP83620 fix */
-      printf("* ") ;
+//      printf("* ") ;
       phy_dump_regs() ;
       
 	  //_phy_write(0x13, 0x0000);

@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\SEGGER\JLink_V612a\JLink.exe" -device R5F563NB -if JTAG -speed 1000 -jtagconf -1,-1 -autoconnect 1 -CommanderScript program_flash_script.jlink

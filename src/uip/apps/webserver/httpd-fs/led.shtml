@@ -1,19 +1,32 @@
 %!: /header.html
 <h1>On this page you can control the LEDs on RSK RX62N</h1>
+
+<script>
+
+    function send(checkBoxElem) {
+        var ledState = (true == checkBoxElem.checked) ? "On" : "Off";
+        var ledName = checkBoxElem.name;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', "led.shtml?"+ledName+"="+ledState, true);
+        xhr.send();
+    }
+
+</script>
+
 <center>
-<p>
-    <FORM ACTION="update.shtml" METHOD="GET">
-        LED A
-        <INPUT TYPE="RADIO" NAME="LEDA" VALUE="On"> On
-        <INPUT TYPE="RADIO" NAME="LEDA" VALUE="Off" CHECKED> Off<BR><BR>
-        LED B
-        <INPUT TYPE="RADIO" NAME="LEDB" VALUE="On"> On
-        <INPUT TYPE="RADIO" NAME="LEDB" VALUE="Off" CHECKED> Off<BR><BR>
-        LED C
-        <INPUT TYPE="RADIO" NAME="LEDC" VALUE="On"> On
-        <INPUT TYPE="RADIO" NAME="LEDC" VALUE="Off" CHECKED> Off<BR><BR>
-        <INPUT TYPE="SUBMIT" VALUE="Send"> <INPUT TYPE="RESET">
-    </FORM>
-</p>
+<div class='circle-container'>
+    <p class='deg0'><INPUT TYPE="CHECKBOX" NAME="LED7" onchange="send(this)">LED7</p>
+    <p class='deg30'><INPUT TYPE="CHECKBOX" NAME="LED8" onchange="send(this)">LED8</p>
+    <p class='deg60'><INPUT TYPE="CHECKBOX" NAME="LED9" onchange="send(this)">LED9</p>
+    <p class='deg90'><INPUT TYPE="CHECKBOX" NAME="LED10" onchange="send(this)">LED10</p>
+    <p class='deg120'><INPUT TYPE="CHECKBOX" NAME="LED11" onchange="send(this)">LED11</p>
+    <p class='deg150'><INPUT TYPE="CHECKBOX" NAME="LED12" onchange="send(this)">LED12</p>
+    <p class='deg180'><INPUT TYPE="CHECKBOX" NAME="LED13" onchange="send(this)">LED13</p>
+    <p class='deg210'><INPUT TYPE="CHECKBOX" NAME="LED14" onchange="send(this)">LED14</p>
+    <p class='deg240'><INPUT TYPE="CHECKBOX" NAME="LED15" onchange="send(this)">LED15</p>
+    <p class='deg270'><INPUT TYPE="CHECKBOX" NAME="LED4" onchange="send(this)">LED4</p>
+    <p class='deg300'><INPUT TYPE="CHECKBOX" NAME="LED5" onchange="send(this)">LED5</p>
+    <p class='deg330'><INPUT TYPE="CHECKBOX" NAME="LED6" onchange="send(this)">LED6</p>
+</div>
 </center>
 %!: /footer.html
