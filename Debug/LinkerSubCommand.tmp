@@ -17,6 +17,7 @@
 -input="./src/r_rspi_rx600/src/r_rspi_rx600.obj"
 -input="./src/uip/apps/dhcpc/dhcpc.obj"
 -input="./src/uip/apps/webserver/http-strings.obj"
+-input="./src/uip/apps/webserver/httpd-board-data.obj"
 -input="./src/uip/apps/webserver/httpd-cgi.obj"
 -input="./src/uip/apps/webserver/httpd-fs.obj"
 -input="./src/uip/apps/webserver/httpd.obj"

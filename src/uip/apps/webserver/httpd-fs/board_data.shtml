@@ -1,0 +1,12 @@
+%!: /header.html
+<h1>Board specific data</h1>
+<center>
+<table width="300">
+
+<tr><td>Temp</td>
+<td>%! board-data TEMP
+</td></tr>
+
+</table>
+</center>
+%!: /footer.html

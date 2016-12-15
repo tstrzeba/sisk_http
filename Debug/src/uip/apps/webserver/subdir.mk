@@ -5,18 +5,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ..\src/uip/apps/webserver/http-strings.c \
+..\src/uip/apps/webserver/httpd-board-data.c \
 ..\src/uip/apps/webserver/httpd-cgi.c \
 ..\src/uip/apps/webserver/httpd-fs.c \
 ..\src/uip/apps/webserver/httpd.c 
 
 C_DEPS += \
 ./src/uip/apps/webserver/http-strings.d \
+./src/uip/apps/webserver/httpd-board-data.d \
 ./src/uip/apps/webserver/httpd-cgi.d \
 ./src/uip/apps/webserver/httpd-fs.d \
 ./src/uip/apps/webserver/httpd.d 
 
 OBJS += \
 ./src/uip/apps/webserver/http-strings.obj \
+./src/uip/apps/webserver/httpd-board-data.obj \
 ./src/uip/apps/webserver/httpd-cgi.obj \
 ./src/uip/apps/webserver/httpd-fs.obj \
 ./src/uip/apps/webserver/httpd.obj 
