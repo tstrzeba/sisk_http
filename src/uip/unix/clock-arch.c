@@ -97,12 +97,6 @@ void  timer_init(void)
  */
 void int_cmt0_isr(void)
 {
-#if PLATFORM_RSK63N==1    
-    LED3 = ~LED0 ;
-#elif PLATFORM_RDK63N==1
-    LED4 = ~LED4 ;
-#endif    	      
-
     timer_clock_ticks++;
 }
 

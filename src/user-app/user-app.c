@@ -166,37 +166,5 @@ void user_app(void)
             ptr1 = ptr2 + 3;
             ptr2 = strstr(ptr1, "LED");
         } // end while()
-
-        // Original code
-//        for (i = 0; i < 3; i++)
-//        {
-//            // Search for key word "LED"
-//            ptr2 = strstr(ptr1, "LED");
-//            if (ptr2 != NULL)
-//            {
-//                // Determine the LED settings, on or off
-//                ledval = strncmp(ptr2+5, "On", 2) ? LED_OFF : LED_ON;
-//                ptr1 = ptr2+5;
-//            }
-//
-//            // NOTE: LED4 is used by timer tick to indicate activity
-//            switch(i)
-//            {
-//                case 0:
-//                    LED5 = ledval;
-//                break;
-//
-//                case 1:
-//                    LED6 = ledval;
-//                break;
-//
-//                case 2:
-//                    LED7 = ledval;
-//                break;
-//
-//                default:
-//                break;
-//            }
-//        }
     }
 }

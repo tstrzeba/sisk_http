@@ -275,7 +275,7 @@ post-build:
 	-C:\Renesas\DEBUGC~1\RENESA~1.EXE SISK_HTTP.abs SISK_HTTP.x 
 	@echo.
 
-.PHONY: all clean dependents $(LINKER_OUTPUT_OUTPUTS)
+.PHONY: all clean dependents
 .SECONDARY: post-build
 
 -include ../makefile.targets
