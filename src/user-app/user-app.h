@@ -37,7 +37,7 @@
 Public Function Prototypes
 ******************************************************************************/
 void user_app(void);
-
+void init_user_app(void);
 
 #endif /* USER_APP_H */
 

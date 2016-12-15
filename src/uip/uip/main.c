@@ -43,6 +43,8 @@ main(void)
     struct uip_eth_addr mac_addr;
     uint32_t ch = 0;
 
+    init_user_app();
+
     lcd_initialize();
     display_uip_demo();
 

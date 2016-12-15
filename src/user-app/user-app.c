@@ -41,6 +41,7 @@ Includes   <System Includes> , "Project Includes"
 #include "platform.h"
 #include "user-app.h"
 #include "uip.h"
+#include "httpd-board-data.h"
 
 /******************************************************************************
 Macro definitions
@@ -90,6 +91,19 @@ const uint8_t reserved[46] = {0};
 
 #pragma section
 
+static size_t returnTemperature(char* pBuff, const size_t maxLen) {
+    size_t retLen = 0;
+    if (NULL != pBuff) {
+        strncpy(pBuff, "Temp 0.1C", 9);
+        retLen = 9;
+    }
+    return retLen;
+}
+
+
+void init_user_app(void) {
+    registerHttpdBoardDataGetter(returnTemperature, BOARD_DATA_TEMP);
+}
 
 /******************************************************************************
 * Function Name: user_app

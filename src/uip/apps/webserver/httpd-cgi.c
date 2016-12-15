@@ -53,13 +53,17 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "httpd-board-data.h"
 
 HTTPD_CGI_CALL(file, "file-stats", file_stats);
 HTTPD_CGI_CALL(tcp, "tcp-connections", tcp_stats);
 HTTPD_CGI_CALL(net, "net-stats", net_stats);
+HTTPD_CGI_CALL(board, "board-data", board_data);
 
-static const struct httpd_cgi_call *calls[] = { &file, &tcp, &net, NULL };
+extern const char* HttpdBoardDataErrorStr;
+static const struct httpd_cgi_call *calls[] = { &file, &tcp, &net, &board, NULL };
 
+static char boardDataBuff[20] = {0};
 /*---------------------------------------------------------------------------*/
 static
 PT_THREAD(nullfunction(struct httpd_state *s, char *ptr))
@@ -221,5 +225,86 @@ PT_THREAD(net_stats(struct httpd_state *s, char *ptr))
   
   PSOCK_END(&s->sout);
 }
+/*---------------------------------------------------------------------------*/
+
+
+
+
+/*---------------------------------------------------------------------------*/
+static size_t runGetter(HttpdBoardDataGetterFuncType func, char* pStr, size_t maxLen) {
+
+    uint32_t retVal = 0;
+
+    if (NULL != func) {
+        size_t len = func(pStr, maxLen);
+        if (len > maxLen) {
+            len = maxLen;
+        }
+        pStr[len] = '\0';
+        retVal = len;
+    } else {
+        // send error msg
+
+        // strlen doesn't count '\0' char
+        const size_t len = strlen(HttpdBoardDataErrorStr);
+        strncpy(pStr, HttpdBoardDataErrorStr, len);
+        pStr[len] = '\0';
+        retVal = len;
+    }
+
+    return retVal;
+}
+
+static unsigned short generate_board_data(void *arg)
+{
+
+    char* pArgStr = (char*)arg;
+    unsigned short retVal = 0;
+    size_t dataLen = 0;
+
+    HttpdBoardDataGetterFuncType dataGetterFunc = NULL;
+    // todo call from here the users functions that returns board specific data
+
+    if (NULL != pArgStr) {
+        if (0 == strncmp(pArgStr, "TEMP", 4)) {
+            dataGetterFunc = getHttpdBoardDataGetter(BOARD_DATA_TEMP);
+            dataLen = runGetter(dataGetterFunc, boardDataBuff, (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1);
+            retVal = snprintf((char *)uip_appdata
+                       , dataLen
+                       , "%s"
+                       , boardDataBuff);
+        }
+        else if (0 == strncmp(pArgStr, "LED4", 4)) {
+            // todo fill with data
+
+        }
+    } else {
+        retVal = sprintf((char *)uip_appdata, "missing cgi argument\n");
+    }
+
+    return retVal;
+}
+
+static PT_THREAD(board_data(struct httpd_state *s, char *ptr))
+{
+    // convert received data to output buffer, as argument pass the pointer after
+    // the space, this represents first character of argument
+    const size_t ptr_len = strlen(ptr);
+    char* pSpaceChar = strchr(ptr, ' ');
+    char* forwardArg = NULL;
+
+    PSOCK_BEGIN(&s->sout);
+
+    // Properly handle situation when there is no argument after cgi script name
+    if ((NULL != pSpaceChar) &&
+            ((size_t)(pSpaceChar + 1 - ptr) <= ptr_len)) {
+        // point to character just after the space
+        forwardArg = pSpaceChar + 1;
+    }
+    PSOCK_GENERATOR_SEND(&s->sout, generate_board_data, forwardArg);
+
+    PSOCK_END(&s->sout);
+}
+
 /*---------------------------------------------------------------------------*/
 /** @} */
