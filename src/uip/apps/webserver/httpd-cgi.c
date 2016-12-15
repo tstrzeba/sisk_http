@@ -274,9 +274,13 @@ static unsigned short generate_board_data(void *arg)
                        , "%s"
                        , boardDataBuff);
         }
-        else if (0 == strncmp(pArgStr, "LED4", 4)) {
-            // todo fill with data
-
+        else if (0 == strncmp(pArgStr, "POT", 3)) {
+        	 dataGetterFunc = getHttpdBoardDataGetter(BOARD_DATA_POT);
+        	            dataLen = runGetter(dataGetterFunc, boardDataBuff, (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1);
+        	            retVal = snprintf((char *)uip_appdata
+        	                       , dataLen
+        	                       , "%s"
+        	                       , boardDataBuff);
         }
     } else {
         retVal = sprintf((char *)uip_appdata, "missing cgi argument\n");

@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+..\src/user-app/S12ADC.c \
 ..\src/user-app/user-app.c 
 
 C_DEPS += \
+./src/user-app/S12ADC.d \
 ./src/user-app/user-app.d 
 
 OBJS += \
+./src/user-app/S12ADC.obj \
 ./src/user-app/user-app.obj 
 
 

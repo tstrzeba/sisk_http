@@ -3,8 +3,12 @@
 <center>
 <table width="300">
 
-<tr><td>Temp</td>
+<tr><td>Temperature</td>
 <td>%! board-data TEMP
+</td></tr>
+
+<tr><td>Potentiometer</td>
+<td>%! board-data POT
 </td></tr>
 
 </table>

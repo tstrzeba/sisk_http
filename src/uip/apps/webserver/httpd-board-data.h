@@ -20,7 +20,7 @@ typedef size_t (*HttpdBoardDataGetterFuncType)(char* buff, const size_t maxLen);
 /// @Note   Value of enumerations must be always lower than NO_BOARD_DATA_GETTER_FUNCTIONS
 typedef enum GETTER_FUNCTION {
       BOARD_DATA_TEMP = 0//!< TEMPERATURE
-    , BOARD_DATA_SW1 = 1        //!< SW1
+    , BOARD_DATA_POT = 1        //!< POTENTIOMETER
     , BOARD_DATA_SW2 = 2        //!< SW2
     , BOARD_DATA_SW3 = 3        //!< SW3
 } HttpdBoardDataGetterType;

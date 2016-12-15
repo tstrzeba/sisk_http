@@ -12,6 +12,7 @@ Includes   <System Includes> , "Project Includes"
 #include "httpd.h"
 #include "timer.h"
 #include "user-app.h"
+#include "S12ADC.h"
 
 
 #define BUF ((struct uip_eth_hdr *)&uip_buf[0])
@@ -51,6 +52,8 @@ main(void)
     timer_init();
     timer_set(&periodic_timer, CLOCK_SECOND / 2);
     timer_set(&arp_timer, CLOCK_SECOND * 10);
+
+    S12ADC_init();
 
     /* Retrieve the MAC address and display result. */
     if (!get_mac(&mac_addr))

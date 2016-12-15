@@ -38,15 +38,21 @@ Includes   <System Includes> , "Project Includes"
 *******************************************************************************/
 #include <string.h>
 #include <stdlib.h> // strtoul()
+#include <stdio.h>
 #include "platform.h"
 #include "user-app.h"
 #include "uip.h"
 #include "httpd-board-data.h"
+#include "S12ADC.h"
 
 /******************************************************************************
 Macro definitions
 ******************************************************************************/
 #define RDK_MAC_LOCATION             0x00107FF2
+#define	AD_REF_VOLTAGE	330000	/* A/D reference voltage in 0.01mv units	*/
+#define	REF_TEMP_VOLT	126000	/* reference temperature voltage 0.01mv unit	*/
+#define	REF_TEMP_TEMP	250	/* reference temperature temp. 0.1°C	*/
+#define	VOLT_TEMP_SLOPE	41	/* voltage/temperature slope 0.1mv/°C	*/
 
 /******************************************************************************
 Exported global variables and functions (to be accessed by other files)
@@ -92,10 +98,34 @@ const uint8_t reserved[46] = {0};
 #pragma section
 
 static size_t returnTemperature(char* pBuff, const size_t maxLen) {
+	uint32_t tmp_adval = 0;//S12ADC_read_temperature();
+
+	/* calculate temperature: assumed: Vref=3,3v, V25°= 1.26v, slope 4.1mv/°C	*/
+
+	tmp_adval &= 0xfff;	/* 12bit value	*/
+
+	tmp_adval *= AD_REF_VOLTAGE;
+
+	tmp_adval /= 4095;	/* get value in 0.1mv unit	*/
+
+	tmp_adval -= REF_TEMP_VOLT;	/* voltage in ref.temp.	(25°/1.25v)	*/
+
+	tmp_adval /= VOLT_TEMP_SLOPE;	/* get difference in 0.1°C	*/
+
+	tmp_adval += REF_TEMP_TEMP;	/* add ref temp	*/
+
+	uint32_t temp = tmp_adval & 0xffff;
     size_t retLen = 0;
     if (NULL != pBuff) {
-        strncpy(pBuff, "Temp 0.1C", 9);
-        retLen = 9;
+        return sprintf(pBuff, "%u  C", temp);
+    }
+    return retLen;
+}
+
+static size_t returnPotentiometerValue(char* pBuff, const size_t maxLen) {
+    size_t retLen = 0;
+    if (NULL != pBuff) {
+        return sprintf(pBuff, "%u ", S12ADC_read_potentiometer());
     }
     return retLen;
 }
@@ -103,6 +133,7 @@ static size_t returnTemperature(char* pBuff, const size_t maxLen) {
 
 void init_user_app(void) {
     registerHttpdBoardDataGetter(returnTemperature, BOARD_DATA_TEMP);
+    registerHttpdBoardDataGetter(returnPotentiometerValue, BOARD_DATA_POT);
 }
 
 /******************************************************************************
@@ -120,13 +151,11 @@ void user_app(void)
 {
     if (LEDflag)
     {
-        uint8_t ledval, i;
+        uint8_t ledval;
         char *ptr1, *ptr2;
-        uint16_t led;
 
         LEDflag = 0;                   
         ledval = 0;
-        led = 0;
         ptr1 = LEDbuf;                  // pointer to command string
 
         // Scan buffer for 'LED' string and take action for each found one
