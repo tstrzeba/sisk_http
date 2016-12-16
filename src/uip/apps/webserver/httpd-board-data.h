@@ -21,8 +21,10 @@ typedef size_t (*HttpdBoardDataGetterFuncType)(char* buff, const size_t maxLen);
 typedef enum GETTER_FUNCTION {
       BOARD_DATA_TEMP = 0//!< TEMPERATURE
     , BOARD_DATA_POT = 1        //!< POTENTIOMETER
-    , BOARD_DATA_SW2 = 2        //!< SW2
-    , BOARD_DATA_SW3 = 3        //!< SW3
+    , BOARD_DATA_POT_JSON = 2   //!< POTENTIOMETER VALUE IN JSON FORMAT
+    , BOARD_DATA_SWITCHES_JSON = 3   //!< STATE OF ALL SWITCHES IN JSON FORMAT
+    , BOARD_DATA_SW2 = 4        //!< SW2
+    , BOARD_DATA_SW3 = 5        //!< SW3
 } HttpdBoardDataGetterType;
 
 /** Registers user's functions that will provide data of specified type.

@@ -125,15 +125,38 @@ static size_t returnTemperature(char* pBuff, const size_t maxLen) {
 static size_t returnPotentiometerValue(char* pBuff, const size_t maxLen) {
     size_t retLen = 0;
     if (NULL != pBuff) {
-        return sprintf(pBuff, "%u ", S12ADC_read_potentiometer());
+        return sprintf(pBuff, "%u \n", S12ADC_read_potentiometer());
     }
     return retLen;
+}
+
+static size_t returnPotentiometerValueJSON(char* pBuff, const size_t maxLen) {
+    size_t retLen = 0;
+    if (NULL != pBuff) {
+        return sprintf(pBuff, "\"pot\":\"%u\"", S12ADC_read_potentiometer());
+    }
+    return retLen;
+}
+
+static size_t returnSwitchesStateJSON(char* pBuff, const size_t maxLen) {
+    static const char* onStr = "Active";
+    static const char* offStr = "Inactive";
+    return snprintf(pBuff, maxLen,
+            "\"sw1\":\"%s\","
+            "\"sw2\":\"%s\","
+            "\"sw3\":\"%s\""
+            , (0 == SW1) ? onStr : offStr
+            , (0 == SW2) ? onStr : offStr
+            , (0 == SW3) ? onStr : offStr
+    );
 }
 
 
 void init_user_app(void) {
     registerHttpdBoardDataGetter(returnTemperature, BOARD_DATA_TEMP);
     registerHttpdBoardDataGetter(returnPotentiometerValue, BOARD_DATA_POT);
+    registerHttpdBoardDataGetter(returnPotentiometerValueJSON, BOARD_DATA_POT_JSON);
+    registerHttpdBoardDataGetter(returnSwitchesStateJSON, BOARD_DATA_SWITCHES_JSON);
 }
 
 /******************************************************************************

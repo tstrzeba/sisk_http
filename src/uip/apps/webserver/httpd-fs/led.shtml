@@ -2,12 +2,22 @@
 <h1>On this page you can control the LEDs on RSK RX62N</h1>
 
 <script>
+    setTimeout(resetOnLoad, 5); // update switches - will be called once
 
+    function resetOnLoad() {
+        var ledsState = "LED4=Off" + "&LED5=Off" + "&LED6=Off" + "&LED7=Off" + "&LED8=Off" + "&LED9=Off" +
+                        "&LED10=Off" + "&LED11=Off" + "&LED12=Off" + "&LED13=Off" + "&LED14=Off" + "&LED15=Off";
+                        
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', "raw_bd.shtml?" + ledsState, true);
+        xhr.send();
+    }
+    
     function send(checkBoxElem) {
         var ledState = (true == checkBoxElem.checked) ? "On" : "Off";
         var ledName = checkBoxElem.name;
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', "led.shtml?"+ledName+"="+ledState, true);
+        xhr.open('GET', "raw_bd.shtml?"+ledName+"="+ledState, true);
         xhr.send();
     }
 

@@ -59,11 +59,12 @@ HTTPD_CGI_CALL(file, "file-stats", file_stats);
 HTTPD_CGI_CALL(tcp, "tcp-connections", tcp_stats);
 HTTPD_CGI_CALL(net, "net-stats", net_stats);
 HTTPD_CGI_CALL(board, "board-data", board_data);
+HTTPD_CGI_CALL(all_board, "all-board-data", all_board_data);
 
 extern const char* HttpdBoardDataErrorStr;
-static const struct httpd_cgi_call *calls[] = { &file, &tcp, &net, &board, NULL };
+static const struct httpd_cgi_call *calls[] = { &file, &tcp, &net, &board, &all_board, NULL };
 
-static char boardDataBuff[20] = {0};
+static char boardDataBuff[100] = {0};
 /*---------------------------------------------------------------------------*/
 static
 PT_THREAD(nullfunction(struct httpd_state *s, char *ptr))
@@ -229,7 +230,7 @@ PT_THREAD(net_stats(struct httpd_state *s, char *ptr))
 
 
 
-
+// BOARD DATA (specified in argument) CGI handle
 /*---------------------------------------------------------------------------*/
 static size_t runGetter(HttpdBoardDataGetterFuncType func, char* pStr, size_t maxLen) {
 
@@ -275,12 +276,12 @@ static unsigned short generate_board_data(void *arg)
                        , boardDataBuff);
         }
         else if (0 == strncmp(pArgStr, "POT", 3)) {
-        	 dataGetterFunc = getHttpdBoardDataGetter(BOARD_DATA_POT);
-        	            dataLen = runGetter(dataGetterFunc, boardDataBuff, (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1);
-        	            retVal = snprintf((char *)uip_appdata
-        	                       , dataLen
-        	                       , "%s"
-        	                       , boardDataBuff);
+             dataGetterFunc = getHttpdBoardDataGetter(BOARD_DATA_POT);
+            dataLen = runGetter(dataGetterFunc, boardDataBuff, (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1);
+            retVal = snprintf((char *)uip_appdata
+                       , dataLen
+                       , "%s"
+                       , boardDataBuff);
         }
     } else {
         retVal = sprintf((char *)uip_appdata, "missing cgi argument\n");
@@ -310,5 +311,49 @@ static PT_THREAD(board_data(struct httpd_state *s, char *ptr))
     PSOCK_END(&s->sout);
 }
 
+/*---------------------------------------------------------------------------*/
+
+
+// ALL BOARD DATA CGI handle
+/*---------------------------------------------------------------------------*/
+static unsigned short generate_all_board_data(void *arg)
+{
+    unsigned short retVal = 0;
+    const size_t safeBuffSize = (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1;
+    HttpdBoardDataGetterFuncType dataGetterFunc = NULL;
+    size_t dataLen = 0;
+
+    // begin json
+    *(char*)uip_appdata = '{';
+    retVal += 1;
+    const HttpdBoardDataGetterType whichData[] = {BOARD_DATA_POT_JSON, BOARD_DATA_SWITCHES_JSON};
+    for (size_t i = 0; i < sizeof(whichData)/sizeof(whichData[0]); ++i) {
+        // Get potentiometer value
+        dataGetterFunc = getHttpdBoardDataGetter(whichData[i]);
+        dataLen = runGetter(dataGetterFunc, boardDataBuff, safeBuffSize);
+        retVal += snprintf((char *)uip_appdata + retVal
+                   , dataLen + 2 /*+2 is required to copy the,character*/
+                   , "%s,"
+                   , boardDataBuff);
+    }
+
+    // end json
+    // -1 is for OVERRIDE last comma, so don't update the retVal
+    *(char*)((char*)uip_appdata+retVal-1) = '}';
+
+
+    return retVal;
+}
+
+static PT_THREAD(all_board_data(struct httpd_state *s, char *ptr))
+{
+    // no cgi name argument expected
+
+    PSOCK_BEGIN(&s->sout);
+
+    PSOCK_GENERATOR_SEND(&s->sout, generate_all_board_data, NULL);
+
+    PSOCK_END(&s->sout);
+}
 /*---------------------------------------------------------------------------*/
 /** @} */

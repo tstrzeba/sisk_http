@@ -1,16 +1,53 @@
 %!: /header.html
+<script>
+    setTimeout(updateData, 10); // update switches - will be called once
+    var myVar = setInterval(updateData, 820);
+
+    function procesResponse(xhr) {
+        var txt = xhr.responseText.substring(0,xhr.responseText.indexOf('\0')); // removes "null" char
+        var jsonObj = JSON.parse(txt);
+        //document.getElementById("testout").innerHTML = "POTENTIOMETER = " + jsonObj.pot + "<br> SW1 = " + jsonObj.sw1;
+        
+        // update potentiometer
+        document.getElementById("POTID").innerHTML = jsonObj.pot
+        // update SWITCHES states
+        document.getElementById("COLSWSID").innerHTML = "SW1 = " + jsonObj.sw1 + "<br>"
+                                                   + "SW2 = " + jsonObj.sw2 + "<br>"
+                                                   + "SW3 = " + jsonObj.sw3;
+        
+    }
+    
+    function updateData() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                procesResponse(this);
+            }
+        };
+        xhr.open('GET', "raw_bd.shtml", true);
+        xhr.send();
+    }
+    
+
+</script>
 <h1>Board specific data</h1>
 <center>
 <table width="300">
 
 <tr><td>Temperature</td>
-<td>%! board-data TEMP
+<td id="TEMPID">%! board-data TEMP
 </td></tr>
 
 <tr><td>Potentiometer</td>
-<td>%! board-data POT
+<td id="POTID">%! board-data POT
+</td></tr>
+
+<tr><td>Switches</td>
+<td id="COLSWSID">
 </td></tr>
 
 </table>
 </center>
+
+
 %!: /footer.html
