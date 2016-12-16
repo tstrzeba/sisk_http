@@ -1,5 +1,48 @@
-%!: /header.html
-<h1>Current connections</h1><br><table width="100%">
-<tr><th>Local</th><th>Remote</th><th>State</th><th>Retransmissions</th><th>Timer</th><th>Flags</th></tr>
-%! tcp-connections 
-%!: /footer.html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>AGH WIET EiT SiSK TCPIP DEMO</title>
+    <link rel="stylesheet" type="text/css" href="style.css">  
+  </head>
+  <body>		
+
+		<header>
+			<div class="innertube">
+				<center><h1>TCP/IP DEMO</h1></center>
+			</div>
+		</header>
+		
+		<div id="wrapper">
+		
+			<main>
+				<div id="content">
+					<div class="innertube">
+						<center><h1>Current connections</h1>
+						<p><table width="600">
+							<tr><th>Local</th><th>Remote</th><th>State</th><th>Retransmissions</th><th>Timer</th><th>Flags</th></tr>
+							%! tcp-connections
+							</table></p></center>
+					</div>
+				</div>
+			</main>
+			
+			<nav>
+				<div class="innertube">
+					<h3><a href="/">Front page</a></h3>
+					<h3><a href="stats.shtml">Network statistics</a></h3>
+					<h3><a href="tcp.shtml">Network connections</a></h3>
+					<h3><a href="board_data.shtml">Board Data</a></h3>
+					<h3><a href="led.shtml">LED Control</a></h3>
+				</div>
+			</nav>
+		
+		</div>
+		
+		<footer>
+			<div class="innertube">
+				<p>AGH - WIET</p>
+			</div>
+		</footer>
+	
+	</body>
+</html>

@@ -1,49 +1,90 @@
-%!: /header.html
-<script>
-    setTimeout(updateData, 10); // update switches - will be called once
-    var myVar = setInterval(updateData, 820);
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+  <head>
+    <title>AGH WIET EiT SiSK TCPIP DEMO</title>
+    <link rel="stylesheet" type="text/css" href="style.css">  
+  </head>
+  <body>		
 
-    function procesResponse(xhr) {
-        var txt = xhr.responseText.substring(0,xhr.responseText.indexOf('\0')); // removes "null" char
-        var jsonObj = JSON.parse(txt);
-        //document.getElementById("testout").innerHTML = "POTENTIOMETER = " + jsonObj.pot + "<br> SW1 = " + jsonObj.sw1;
-        
-        // update potentiometer
-        document.getElementById("POTID").innerHTML = jsonObj.pot
-        // update SWITCHES states
-        document.getElementById("COLSWSID").innerHTML = "SW1 = " + jsonObj.sw1 + "<br>"
-                                                   + "SW2 = " + jsonObj.sw2 + "<br>"
-                                                   + "SW3 = " + jsonObj.sw3;
-        
-    }
-    
-    function updateData() {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                procesResponse(this);
-            }
-        };
-        xhr.open('GET', "raw_bd.shtml", true);
-        xhr.send();
-    }
-    
-
-</script>
-<h1>Board specific data</h1>
-<center>
-<table width="300">
-
-<tr><td>Potentiometer</td>
-<td id="POTID">%! board-data POT
-</td></tr>
-
-<tr><td>Switches</td>
-<td id="COLSWSID">
-</td></tr>
-
-</table>
-</center>
-
-
-%!: /footer.html
+		<header>
+			<div class="innertube">
+				<center><h1>TCP/IP DEMO</h1></center>
+			</div>
+		</header>
+		
+		<div id="wrapper">
+		
+			<main>
+				<div id="content">
+					<div class="innertube">
+					<center><h1>Board Specific Data</h1>
+					<p></p></center>
+						<script>
+						    setTimeout(updateData, 10); // update switches - will be called once
+						    var myVar = setInterval(updateData, 820);
+						
+						    function procesResponse(xhr) {
+						        var txt = xhr.responseText.substring(0,xhr.responseText.indexOf('\0')); // removes "null" char
+						        var jsonObj = JSON.parse(txt);
+						        //document.getElementById("testout").innerHTML = "POTENTIOMETER = " + jsonObj.pot + "<br> SW1 = " + jsonObj.sw1;
+						        
+						        // update potentiometer
+						        document.getElementById("POTID").innerHTML = jsonObj.pot
+						        // update SWITCHES states
+						        document.getElementById("COLSWSID").innerHTML = "SW1 = " + jsonObj.sw1 + "<br>"
+						                                                   + "SW2 = " + jsonObj.sw2 + "<br>"
+						                                                   + "SW3 = " + jsonObj.sw3;
+						        
+						    }
+						    
+						    function updateData() {
+						        var xhr = new XMLHttpRequest();
+						        xhr.onreadystatechange = function() {
+						            if (this.readyState == 4 && this.status == 200) {
+						                procesResponse(this);
+						            }
+						        };
+						        xhr.open('GET', "raw_bd.shtml", true);
+						        xhr.send();
+						    }
+						    
+						
+						</script>
+						<center>
+						<table width="300">
+						
+						<tr><td>Potentiometer</td>
+						<td id="POTID">%! board-data POT
+						</td></tr>
+						
+						<tr><td>Switches</td>
+						<td id="COLSWSID">
+						</td></tr>
+						
+						</table>
+						</center>
+						
+					</div>
+				</div>
+			</main>
+			
+			<nav>
+				<div class="innertube">
+					<h3><a href="/">Front page</a></h3>
+					<h3><a href="stats.shtml">Network statistics</a></h3>
+					<h3><a href="tcp.shtml">Network connections</a></h3>
+					<h3><a href="board_data.shtml">Board Data</a></h3>
+					<h3><a href="led.shtml">LED Control</a></h3>
+				</div>
+			</nav>
+		
+		</div>
+		
+		<footer>
+			<div class="innertube">
+				<p>AGH - WIET</p>
+			</div>
+		</footer>
+	
+	</body>
+</html>
