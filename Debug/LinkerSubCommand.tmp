@@ -31,5 +31,6 @@
 -input="./src/uip/uip/uip_arp.obj"
 -input="./src/uip/uip/uiplib.obj"
 -input="./src/uip/unix/clock-arch.obj"
+-input="./src/user-app/S12ADC.obj"
 -input="./src/user-app/user-app.obj"
 -start=B_RX_DESC,B_TX_DESC,B_RX_BUFF_1,B_TX_BUFF_1,B_1,R_1,B_2,R_2,B,R,SU,SI/01000,C_1,C_2,C,L*,C$*,D*,P,W*/0FFF80000,C_FLASH_CONFIG_PARAMS_1/0FFFFFF00,FIXEDVECT/0FFFFFF90

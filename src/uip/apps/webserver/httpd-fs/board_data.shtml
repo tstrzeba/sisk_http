@@ -34,10 +34,6 @@
 <center>
 <table width="300">
 
-<tr><td>Temperature</td>
-<td id="TEMPID">%! board-data TEMP
-</td></tr>
-
 <tr><td>Potentiometer</td>
 <td id="POTID">%! board-data POT
 </td></tr>

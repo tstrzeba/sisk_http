@@ -5,7 +5,7 @@
 #include <stddef.h>
 
 /// How may getter functions can be registered
-#define NO_BOARD_DATA_GETTER_FUNCTIONS 4
+#define NO_BOARD_DATA_GETTER_FUNCTIONS 3
 
 /** Type of getter function.
  *
@@ -19,12 +19,9 @@ typedef size_t (*HttpdBoardDataGetterFuncType)(char* buff, const size_t maxLen);
 /// Determine type of getter
 /// @Note   Value of enumerations must be always lower than NO_BOARD_DATA_GETTER_FUNCTIONS
 typedef enum GETTER_FUNCTION {
-      BOARD_DATA_TEMP = 0//!< TEMPERATURE
-    , BOARD_DATA_POT = 1        //!< POTENTIOMETER
-    , BOARD_DATA_POT_JSON = 2   //!< POTENTIOMETER VALUE IN JSON FORMAT
-    , BOARD_DATA_SWITCHES_JSON = 3   //!< STATE OF ALL SWITCHES IN JSON FORMAT
-    , BOARD_DATA_SW2 = 4        //!< SW2
-    , BOARD_DATA_SW3 = 5        //!< SW3
+	BOARD_DATA_POT = 0        //!< POTENTIOMETER
+    , BOARD_DATA_POT_JSON = 1   //!< POTENTIOMETER VALUE IN JSON FORMAT
+    , BOARD_DATA_SWITCHES_JSON = 2   //!< STATE OF ALL SWITCHES IN JSON FORMAT
 } HttpdBoardDataGetterType;
 
 /** Registers user's functions that will provide data of specified type.

@@ -52,6 +52,5 @@ Prototypes for exported functions
 void S12ADC_init (void) ;
 bool S12ADC_conversion_complete (void) ;
 uint16_t S12ADC_read_potentiometer (void) ;
-uint32_t S12ADC_read_temperature (void);
 
 #endif

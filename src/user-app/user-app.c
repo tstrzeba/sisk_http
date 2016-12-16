@@ -97,31 +97,6 @@ const uint8_t reserved[46] = {0};
 
 #pragma section
 
-static size_t returnTemperature(char* pBuff, const size_t maxLen) {
-	uint32_t tmp_adval = 0;//S12ADC_read_temperature();
-
-	/* calculate temperature: assumed: Vref=3,3v, V25°= 1.26v, slope 4.1mv/°C	*/
-
-	tmp_adval &= 0xfff;	/* 12bit value	*/
-
-	tmp_adval *= AD_REF_VOLTAGE;
-
-	tmp_adval /= 4095;	/* get value in 0.1mv unit	*/
-
-	tmp_adval -= REF_TEMP_VOLT;	/* voltage in ref.temp.	(25°/1.25v)	*/
-
-	tmp_adval /= VOLT_TEMP_SLOPE;	/* get difference in 0.1°C	*/
-
-	tmp_adval += REF_TEMP_TEMP;	/* add ref temp	*/
-
-	uint32_t temp = tmp_adval & 0xffff;
-    size_t retLen = 0;
-    if (NULL != pBuff) {
-        return sprintf(pBuff, "%u  C", temp);
-    }
-    return retLen;
-}
-
 static size_t returnPotentiometerValue(char* pBuff, const size_t maxLen) {
     size_t retLen = 0;
     if (NULL != pBuff) {
@@ -153,7 +128,6 @@ static size_t returnSwitchesStateJSON(char* pBuff, const size_t maxLen) {
 
 
 void init_user_app(void) {
-    registerHttpdBoardDataGetter(returnTemperature, BOARD_DATA_TEMP);
     registerHttpdBoardDataGetter(returnPotentiometerValue, BOARD_DATA_POT);
     registerHttpdBoardDataGetter(returnPotentiometerValueJSON, BOARD_DATA_POT_JSON);
     registerHttpdBoardDataGetter(returnSwitchesStateJSON, BOARD_DATA_SWITCHES_JSON);

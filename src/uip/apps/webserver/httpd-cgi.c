@@ -267,15 +267,7 @@ static unsigned short generate_board_data(void *arg)
     // todo call from here the users functions that returns board specific data
 
     if (NULL != pArgStr) {
-        if (0 == strncmp(pArgStr, "TEMP", 4)) {
-            dataGetterFunc = getHttpdBoardDataGetter(BOARD_DATA_TEMP);
-            dataLen = runGetter(dataGetterFunc, boardDataBuff, (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1);
-            retVal = snprintf((char *)uip_appdata
-                       , dataLen
-                       , "%s"
-                       , boardDataBuff);
-        }
-        else if (0 == strncmp(pArgStr, "POT", 3)) {
+        if (0 == strncmp(pArgStr, "POT", 3)) {
              dataGetterFunc = getHttpdBoardDataGetter(BOARD_DATA_POT);
             dataLen = runGetter(dataGetterFunc, boardDataBuff, (sizeof(boardDataBuff)/sizeof(boardDataBuff[0]))-1);
             retVal = snprintf((char *)uip_appdata
